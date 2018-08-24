@@ -4,6 +4,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,15 +20,15 @@ public class ProductRestfulTest {
 	@Before
 	public void createUri() {
 		client = ClientBuilder.newClient();
-		webTarget = client.target("https://localhost:8080/RestfulMediatorTarget/webapi/products/{productId}");
+		webTarget = client.target("http://localhost:8080/RestfulMediatorTarget/webapi/products/{productId}");
 		
 	}
 
 	@Test
 	public void test() {
 		String productId = "13860428";
-		Product product = webTarget.resolveTemplate("productId",productId).request().accept(MediaType.APPLICATION_JSON).get(Product.class);
-		assertTrue("result is correct", product!=null);
+		Response response =  webTarget.resolveTemplate("productId",productId).request().accept(MediaType.APPLICATION_JSON).get();
+		assertNotNull(response.readEntity(Product.class));
 	}
 
 }

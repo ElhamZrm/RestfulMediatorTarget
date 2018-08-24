@@ -50,9 +50,14 @@
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-moxy</artifactId>
         </dependency>
-       
-        
-        
+
+	<dependency>
+		<groupId>org.glassfish</groupId>
+		<artifactId>javax.json</artifactId>
+		<version>1.0</version>
+	</dependency>  
+	
+	
     <!-- I've added this dependency to remove javax.httpservlet error -->
 	<dependency>
 	    <groupId>javax.servlet</groupId>
