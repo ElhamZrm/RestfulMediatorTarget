@@ -58,6 +58,7 @@ public class ProductRestfulResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Product saveProduct(@PathParam("productId") String productId , Product product) {
 		product.setProductId(productId);
+		service.updateProduct(product);
 		return product;
 		
 	}

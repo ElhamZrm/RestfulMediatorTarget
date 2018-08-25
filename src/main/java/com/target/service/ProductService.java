@@ -2,11 +2,13 @@ package com.target.service;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.target.dao.PriceDao;
+import com.target.exception.UpdateException;
 import com.target.model.Price;
 import com.target.model.ProWrapper;
 import com.target.model.Product;
@@ -40,6 +42,19 @@ public class ProductService {
 	public Price getPrice(String productId) {
 		PriceDao priceDao = new PriceDao();
 		return priceDao.getPrice(productId);
+	}
+	
+	
+	public Product updateProduct(Product product) {
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target("https://redsky.target.com/v2/pdp/tcin/{productId}");
+		Response postResponse = target.request().accept(MediaType.APPLICATION_JSON).post(Entity.json(product));
+		if(postResponse.getStatus()!=201) {
+			throw new UpdateException("update had error");
+		}else {
+		ProWrapper pro = postResponse.readEntity(ProWrapper.class);
+		return pro.getProduct();
+		}
 	}
 
 }
